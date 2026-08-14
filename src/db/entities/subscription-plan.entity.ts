@@ -28,6 +28,14 @@ export class SubscriptionPlanEntity {
 
   @Column({ name: 'retry_limit', default: 3 }) retryLimit: number;
 
+  /**
+   * Seconds between retry attempts after a failed charge. Mirrors the field
+   * the contract gained: without it a keeper polling every minute burns the
+   * entire retry budget in minutes rather than across the grace window.
+   */
+  @Column({ name: 'retry_interval', type: 'bigint', default: '3600' })
+  retryInterval: string;
+
   @Column({ default: true }) active: boolean;
 
   @OneToMany(() => SubscriptionEntity, (s) => s.plan)

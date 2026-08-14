@@ -31,6 +31,14 @@ export class SubscriptionEntity {
 
   @Column({ default: 0 }) retries: number;
 
+  /** Earliest time a failed charge may be retried; mirrors the contract. */
+  @Column({ name: 'next_retry_at', type: 'timestamptz', nullable: true })
+  nextRetryAt: Date | null;
+
+  /** On-chain plan id this subscription was opened against. */
+  @Column({ name: 'on_chain_plan_id', type: 'bigint', nullable: true })
+  onChainPlanId: string | null;
+
   @Column({ name: 'started_at', type: 'timestamptz' }) startedAt: Date;
 
   @OneToMany(() => PaymentLogEntity, (p) => p.subscription)

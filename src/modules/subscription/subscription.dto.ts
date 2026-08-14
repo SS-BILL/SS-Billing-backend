@@ -1,6 +1,14 @@
-import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsUUID } from 'class-validator';
 
 export class CreateSubscriptionDto {
-  @IsString() subscriberAddress: string;
-  @IsString() planId: string;
+  /**
+   * `subscriberAddress` is deliberately absent: it is taken from the verified
+   * JWT. Accepting it in the body let any caller create a subscription in
+   * someone else's name.
+   */
+  @ApiProperty({ format: 'uuid' })
+  @IsString()
+  @IsUUID()
+  planId: string;
 }

@@ -53,7 +53,11 @@ export class AnalyticsService {
       .innerJoin('s.plan', 'plan')
       .where('plan.merchantId = :merchantId', { merchantId })
       .andWhere('p.success = true')
-      .andWhere('p.created_at >= NOW() - INTERVAL :days', { days: `${days} days` })
+      // `INTERVAL :days` bound as a parameter produces `INTERVAL $1`, which is
+      // a Postgres syntax error — an interval literal cannot be a bind
+      // parameter. Casting a parameterised string is the correct form and
+      // keeps the value out of the SQL text.
+      .andWhere('p.created_at >= NOW() - (:days || \' days\')::interval', { days })
       .groupBy("DATE_TRUNC('day', p.created_at)")
       .orderBy('date', 'ASC')
       .getRawMany();
