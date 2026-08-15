@@ -1,6 +1,11 @@
 import {
-  Column, CreateDateColumn, Entity, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { SubscriptionPlanEntity } from './subscription-plan.entity';
 import { PaymentLogEntity } from './payment-log.entity';

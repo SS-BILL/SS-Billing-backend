@@ -15,9 +15,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, {
     // Stack traces and driver errors must never reach a client response.
-    logger: isProduction
-      ? ['error', 'warn', 'log']
-      : ['error', 'warn', 'log', 'debug', 'verbose'],
+    logger: isProduction ? ['error', 'warn', 'log'] : ['error', 'warn', 'log', 'debug', 'verbose'],
   });
 
   app.use(helmet());

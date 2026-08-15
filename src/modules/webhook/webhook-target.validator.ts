@@ -109,7 +109,9 @@ export class WebhookTargetValidator {
 
     const check = this.isPublicAddress(resolved.address);
     if (!check.ok) {
-      this.logger.warn(`Blocked webhook target ${hostname} -> ${resolved.address}: ${check.reason}`);
+      this.logger.warn(
+        `Blocked webhook target ${hostname} -> ${resolved.address}: ${check.reason}`,
+      );
       return check;
     }
 

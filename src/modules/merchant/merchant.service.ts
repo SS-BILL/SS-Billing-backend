@@ -89,11 +89,7 @@ export class MerchantService {
     return this.findById(id);
   }
 
-  async update(
-    id: string,
-    callerAddress: string,
-    dto: UpdateMerchantDto,
-  ): Promise<MerchantEntity> {
+  async update(id: string, callerAddress: string, dto: UpdateMerchantDto): Promise<MerchantEntity> {
     const merchant = await this.findOwned(id, callerAddress);
 
     if (dto.name !== undefined) merchant.name = dto.name;

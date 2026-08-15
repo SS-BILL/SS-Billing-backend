@@ -1,6 +1,4 @@
-import {
-  Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
 
 @Entity('payment_logs')

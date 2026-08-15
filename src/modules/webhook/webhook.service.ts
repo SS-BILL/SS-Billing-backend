@@ -7,10 +7,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 import axios from 'axios';
 import { Agent as HttpAgent } from 'node:http';
 import { Agent as HttpsAgent } from 'node:https';
-import {
-  WebhookDeliveryEntity,
-  WebhookStatus,
-} from '../../db/entities/webhook-delivery.entity';
+import { WebhookDeliveryEntity, WebhookStatus } from '../../db/entities/webhook-delivery.entity';
 import { MerchantEntity } from '../../db/entities/merchant.entity';
 import { WebhookTargetValidator } from './webhook-target.validator';
 
@@ -182,7 +179,12 @@ export class WebhookService {
    * Verify an inbound signature. Exposed so merchants can copy the exact
    * comparison, and used by the service's own tests.
    */
-  static verifySignature(secret: string, header: string, body: string, toleranceSec = 300): boolean {
+  static verifySignature(
+    secret: string,
+    header: string,
+    body: string,
+    toleranceSec = 300,
+  ): boolean {
     const parts = Object.fromEntries(
       header.split(',').map((kv) => kv.split('=', 2) as [string, string]),
     );

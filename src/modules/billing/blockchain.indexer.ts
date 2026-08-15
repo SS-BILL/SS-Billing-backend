@@ -126,7 +126,9 @@ export class BlockchainIndexer {
     const raw = event.topic[index];
     if (!raw) return null;
     try {
-      const value = scValToNative(raw);
+      // scValToNative is typed `any` by the SDK; keep it `unknown` so the
+      // typeof narrowing below is the only thing that lets a value through.
+      const value: unknown = scValToNative(raw);
       return typeof value === 'string' ? value : null;
     } catch {
       return null;
@@ -154,9 +156,6 @@ export class BlockchainIndexer {
     status: SubscriptionStatus,
   ): Promise<void> {
     if (!subscriberAddress) return;
-    await this.subRepo.update(
-      { subscriberAddress, status: SubscriptionStatus.ACTIVE },
-      { status },
-    );
+    await this.subRepo.update({ subscriberAddress, status: SubscriptionStatus.ACTIVE }, { status });
   }
 }

@@ -109,7 +109,7 @@ export class StellarService implements OnModuleInit {
     if (SorobanRpc.Api.isSimulationError(sim)) {
       throw new ContractCallError(`${method} simulation failed: ${sim.error}`, true);
     }
-    return sim.result?.retval ? scValToNative(sim.result.retval) : undefined;
+    return sim.result?.retval ? (scValToNative(sim.result.retval) as unknown) : undefined;
   }
 
   /**
@@ -161,7 +161,7 @@ export class StellarService implements OnModuleInit {
       if (result.status === SorobanRpc.Api.GetTransactionStatus.NOT_FOUND) continue;
 
       if (result.status === SorobanRpc.Api.GetTransactionStatus.SUCCESS) {
-        return result.returnValue ? scValToNative(result.returnValue) : undefined;
+        return result.returnValue ? (scValToNative(result.returnValue) as unknown) : undefined;
       }
 
       throw new ContractCallError(`${method} failed on-chain: ${result.status}`, true);

@@ -1,6 +1,11 @@
 import {
-  Column, CreateDateColumn, Entity, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { MerchantEntity } from './merchant.entity';
 import { SubscriptionEntity } from './subscription.entity';

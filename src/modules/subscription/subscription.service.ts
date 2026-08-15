@@ -20,10 +20,7 @@ export class SubscriptionService {
     private readonly paymentRepo: Repository<PaymentLogEntity>,
   ) {}
 
-  async create(
-    subscriberAddress: string,
-    dto: CreateSubscriptionDto,
-  ): Promise<SubscriptionEntity> {
+  async create(subscriberAddress: string, dto: CreateSubscriptionDto): Promise<SubscriptionEntity> {
     const plan = await this.planRepo.findOne({ where: { id: dto.planId } });
     if (!plan) throw new NotFoundException('Plan not found');
     if (!plan.active) throw new ForbiddenException('Plan is not accepting new subscriptions');

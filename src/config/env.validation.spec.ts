@@ -30,9 +30,7 @@ describe('validateEnv', () => {
   });
 
   it('rejects the placeholder JWT secret that used to be the default', () => {
-    expect(() => validateEnv({ ...base(), JWT_SECRET: 'change-me' })).toThrow(
-      /known placeholder/,
-    );
+    expect(() => validateEnv({ ...base(), JWT_SECRET: 'change-me' })).toThrow(/known placeholder/);
   });
 
   it('rejects a JWT secret below the length floor', () => {
@@ -40,9 +38,7 @@ describe('validateEnv', () => {
   });
 
   it('rejects an unrecognised network', () => {
-    expect(() => validateEnv({ ...base(), STELLAR_NETWORK: 'devnet' })).toThrow(
-      /STELLAR_NETWORK/,
-    );
+    expect(() => validateEnv({ ...base(), STELLAR_NETWORK: 'devnet' })).toThrow(/STELLAR_NETWORK/);
   });
 
   describe('when billing is enabled', () => {
