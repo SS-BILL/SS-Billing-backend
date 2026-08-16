@@ -1,6 +1,11 @@
 import {
-  Column, CreateDateColumn, Entity, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { SubscriptionPlanEntity } from './subscription-plan.entity';
 import { PaymentLogEntity } from './payment-log.entity';
@@ -30,6 +35,14 @@ export class SubscriptionEntity {
   status: SubscriptionStatus;
 
   @Column({ default: 0 }) retries: number;
+
+  /** Earliest time a failed charge may be retried; mirrors the contract. */
+  @Column({ name: 'next_retry_at', type: 'timestamptz', nullable: true })
+  nextRetryAt: Date | null;
+
+  /** On-chain plan id this subscription was opened against. */
+  @Column({ name: 'on_chain_plan_id', type: 'bigint', nullable: true })
+  onChainPlanId: string | null;
 
   @Column({ name: 'started_at', type: 'timestamptz' }) startedAt: Date;
 

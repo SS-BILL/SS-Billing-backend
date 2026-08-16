@@ -44,18 +44,24 @@ export class AnalyticsService {
   }
 
   async getRevenueTimeline(merchantId: string, days = 30) {
-    return this.paymentRepo
-      .createQueryBuilder('p')
-      .select("DATE_TRUNC('day', p.created_at)", 'date')
-      .addSelect('SUM(CAST(p.amount AS BIGINT))', 'revenue')
-      .addSelect('COUNT(*)', 'count')
-      .innerJoin('p.subscription', 's')
-      .innerJoin('s.plan', 'plan')
-      .where('plan.merchantId = :merchantId', { merchantId })
-      .andWhere('p.success = true')
-      .andWhere('p.created_at >= NOW() - INTERVAL :days', { days: `${days} days` })
-      .groupBy("DATE_TRUNC('day', p.created_at)")
-      .orderBy('date', 'ASC')
-      .getRawMany();
+    return (
+      this.paymentRepo
+        .createQueryBuilder('p')
+        .select("DATE_TRUNC('day', p.created_at)", 'date')
+        .addSelect('SUM(CAST(p.amount AS BIGINT))', 'revenue')
+        .addSelect('COUNT(*)', 'count')
+        .innerJoin('p.subscription', 's')
+        .innerJoin('s.plan', 'plan')
+        .where('plan.merchantId = :merchantId', { merchantId })
+        .andWhere('p.success = true')
+        // `INTERVAL :days` bound as a parameter produces `INTERVAL $1`, which is
+        // a Postgres syntax error — an interval literal cannot be a bind
+        // parameter. Casting a parameterised string is the correct form and
+        // keeps the value out of the SQL text.
+        .andWhere("p.created_at >= NOW() - (:days || ' days')::interval", { days })
+        .groupBy("DATE_TRUNC('day', p.created_at)")
+        .orderBy('date', 'ASC')
+        .getRawMany()
+    );
   }
 }

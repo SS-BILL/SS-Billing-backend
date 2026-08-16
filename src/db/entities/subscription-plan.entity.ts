@@ -1,6 +1,11 @@
 import {
-  Column, CreateDateColumn, Entity, ManyToOne, OneToMany,
-  PrimaryGeneratedColumn, UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { MerchantEntity } from './merchant.entity';
 import { SubscriptionEntity } from './subscription.entity';
@@ -27,6 +32,14 @@ export class SubscriptionPlanEntity {
   @Column({ name: 'grace_period', type: 'bigint', default: '86400' }) gracePeriod: string;
 
   @Column({ name: 'retry_limit', default: 3 }) retryLimit: number;
+
+  /**
+   * Seconds between retry attempts after a failed charge. Mirrors the field
+   * the contract gained: without it a keeper polling every minute burns the
+   * entire retry budget in minutes rather than across the grace window.
+   */
+  @Column({ name: 'retry_interval', type: 'bigint', default: '3600' })
+  retryInterval: string;
 
   @Column({ default: true }) active: boolean;
 
